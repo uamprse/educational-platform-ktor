@@ -1,0 +1,43 @@
+.lesson-page-content-form-materials-files-item {
+    background-color: #F4F4F4;
+    padding: 15px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lesson-page-content-form-materials-files-item-text-icon {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.lesson-page-content-form-materials-files-item-icon {
+    background-image: url(../../../public/img/file_icon.svg);
+    background-size: 38px 38px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 38px;
+    height: 38px;
+    border: none;
+}
+
+.lesson-page-content-form-materials-files-item-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #4880FF;
+}
+
+.lesson-page-content-form-materials-files-item-button {
+    background-image: url(../../../public/img/bin_icon_blue.svg);
+    background-size: 25px 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    border: none;
+}

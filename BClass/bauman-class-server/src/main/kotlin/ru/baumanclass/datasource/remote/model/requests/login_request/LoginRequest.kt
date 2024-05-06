@@ -1,0 +1,9 @@
+package ru.baumanclass.datasource.remote.model.requests.login_request
+
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class LoginRequest(
+    val email: String,
+    val password: String
+)

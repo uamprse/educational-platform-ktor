@@ -1,0 +1,26 @@
+.side-menu {
+    height: 100%;
+    background: white;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+    margin-bottom: 15px;
+}
+
+.menu-logo {
+    content: url(../../../public/img/logo.svg);
+}
+
+.menu-list-container {
+    margin-top: 38px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

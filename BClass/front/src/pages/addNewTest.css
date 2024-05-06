@@ -1,0 +1,157 @@
+.add-new-test-wrapp {
+    background-color: white;
+    display: flex;
+}
+
+.add-new-test-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.add-new-test-form-container {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: center;
+    padding: 45px 0;
+}
+
+.add-new-test-form-container-static-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+}
+
+.add-new-test-form-header {
+    font-size: 45px;
+    font-weight: 800;
+    color: #202224;
+}
+
+.add-new-test-form-content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 37px;
+    align-items: center;
+    justify-content: center;
+    gap: 45px;
+    width: fit-content;
+}
+
+.add-new-test-form-content-input-subject-text {
+    width: fit-content;
+    height: 96px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.add-new-test-form-content-input-subject-text-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: fit-content;
+}
+
+.add-new-test-form-content-text-title {
+    margin-top: 0;
+}
+
+.add-new-test-form-content-input-subject-text-input {
+    width: 34vw;
+    max-width: 513px;
+    height: 50px;
+    border-radius: 8px;
+    border-color: #D8D8D8;
+    border-style: solid;
+    padding-inline: 10px;
+    font-size: 16px;
+}
+
+.add-new-test-form-content-input-deadline {
+    height: 96px;
+    font-size: 18px;
+    font-weight: 300;
+    width: fit-content;
+}
+
+.add-new-test-form-content-input-deadline-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: fit-content;
+}
+
+.add-new-test-form-content-deadline-title {
+    margin-top: 0;
+}
+
+.add-new-test-form-content-input-deadline-input {
+    width: 25vw;
+    max-width: 360px;
+    height: 50px;
+    border-radius: 8px;
+    border-color: #D8D8D8;
+    border-style: solid;
+    padding-inline: 10px;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.add-new-test-form-container-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-new-question-test-button {
+    margin-top: 45px;
+    width: 187px;
+    height: 50.54px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 14px;
+    color: #5088FF;
+    border: 1px solid #5088FF;
+    background: transparent;
+    justify-self: flex-end;
+}
+
+.add-new-test-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.add-new-test-button {
+    background: #4880FF;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 12px;
+    width: 274px;
+    height: 56px;
+    border: none;
+}
+
+.add-new-test-button:hover {
+    background-color: #4880FF;
+}
+
+.add-new-test-form-content-input-subject-text-input, .add-new-test-form-content-input-deadline-input {
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: #608ffd;
+    }
+}
+
+.add-new-test-form-container-button {
+    justify-content: flex-end;
+    display: flex;
+    width: 100%;
+}
+

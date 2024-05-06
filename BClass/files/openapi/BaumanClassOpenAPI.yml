@@ -1,0 +1,1156 @@
+openapi: 3.0.3
+info:
+  title: BaumanClassAPI
+  description: API for BaumanClass server
+  version: 1.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/directorasicus/BaumanClassAPI/1.0.0
+tags:
+  - name: Чат
+    description: "Обмен сообщениями с моделью"
+  - name: Авторизация
+    description: "Атворизация и вход"
+  - name: Пользователи
+    description: "Взаимодействие с пользователями"
+  - name: Группы
+    description: "взаимодействие с разделом группы"
+  - name: Уроки
+    description: "Взаимодействие с разделом уроки"
+  - name: Материалы
+    description: "Взаимодействие с разделом материалы внутри уроков"
+  - name: Тесты
+    description: "Взаимодействие с разделом тесты"
+  - name: Вопросы
+    description: "Взаимодействие с разделом 'вопросы' тестов"
+paths: 
+  /chat/completions:
+    post:
+      tags:
+        - Чат
+      summary: Получить ответ модели на сообщения
+      description: "Возвращает ответ модели с учетом переданных сообщений."
+      operationId: postRequest
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletion'
+          description: OK
+        '400':
+          $ref: '#/components/responses/BadRequestFormat'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NoSuchModel'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+        - TokenAccess: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiCheckerRequestDto'
+  /api/v1/login:
+    post:
+      tags:
+        - Авторизация
+      summary: Выполнить вход пользователя
+      description: "Получение токена для осуществления входа пользователя в систему. Проверка полученных данных с соответсвующими полями, хранящимися в базе данных"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+              example: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBdXRoZW50aWZpY2F0aW9uIiwiaXNzIjoiLSIsImVtYWlsIjoidXNlcm5hbWUzQGdtYWlsLmNvbSIsImV4cCI6MTcxMjM1MjIxNn0.kz2R59XruPerTr_WEFeXbBmXa0B5eUwcjPaeqRdixczqQICE8VLZ-fTru5ezJv-dERiIDM4OZzRyUu1woG4kow
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+              examples:
+                Example#1: 
+                  description: "Ввод некорректного пароля"
+                  value:
+                    success: false
+                    message: "Incorrect password"
+                Example#2:
+                  description: "Ввод некорректного email"
+                  value:
+                    success: false
+                    message: "Wrong email address"
+                Example#3:
+                  description: ""
+                  value:
+                    success: false
+                    message: "Something went wrong"
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    success: false
+                    message: "null"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+  /api/v1/signup:
+    post:
+      tags: 
+        - Авторизация
+      summary: Осуществление регистрации пользователя
+      description: "Получение токена авторизации при успешной регистрации пользователя в системе"
+      responses:
+        '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BaseResponse'
+                examples:
+                  Example#1:
+                    value:
+                      success: true
+                      message: "null"
+        '400':
+          description: Bad Request
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/BaseResponse'
+                examples:
+                  Example#1:
+                    value:
+                      success: false
+                      message: "Something went wrong"
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+              examples:
+                Example#1:
+                  value:
+                    success: false
+                    message: "null"
+      requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+  /api/v1/users/{uuid}:
+    get:
+      tags: 
+        - Пользователи
+      summary: Получение пользователя
+      description: "Получение данных о пользователе по уникальному uuid"
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор пользователя (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Пользователь не найден
+      security:
+        - TokenAccess: []
+    patch:
+      tags: 
+        - Пользователи
+      summary: Изменение данных пользователя
+      description: "Редактирование данных о пользователе через уникальный uuid пользователя"
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор пользователя (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешное редактирование данных пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '403': 
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Пользователь не найден
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserChange'
+      security:
+        - TokenAccess: []
+  /api/v1/groups:
+    post:
+      tags:
+        - Группы
+      summary: Создание новой группы
+      description: Создает новую группу с указанным названием и генерирует уникальный код приглашения.
+      responses:
+        '201':
+          description: Группа успешно создана
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupEntity'
+        '401':
+          description: Пользователь не авторизован
+        '400':
+          description: Неверный формат данных запроса
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupRequest'
+      security:
+        - TokenAccess: []
+  /api/v1/groups/{groupUuid}:
+    get:
+      tags:
+        - Группы
+      summary: Получение информации о группе
+      description: Получение данных о группе по её уникальному UUID
+      parameters:
+        - in: path
+          name: groupUuid
+          required: true
+          description: Уникальный идентификатор группы (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupEntity'
+        '404':
+          description: Группа не найдена
+      security:
+        - TokenAccess: []
+    delete:
+      tags:
+        - Группы
+      summary: Удаление группы
+      description: Удаляет группу по её уникальному UUID
+      parameters:
+        - in: path
+          name: groupUuid
+          required: true
+          description: Уникальный идентификатор группы (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Группа успешно удалена
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Группа не найдена
+      security:
+        - TokenAccess: []
+  /api/v1/users/{userUuid}/groups:
+    get:
+      tags:
+        - Группы
+      summary: Получение списка групп пользователя
+      description: Получение данных о всех группах, принадлежащих определенному пользователю
+      parameters:
+        - in: path
+          name: userUuid
+          required: true
+          description: Уникальный идентификатор пользователя (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupEntity'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Пользователь не найден или у него нет групп
+      security:
+        - TokenAccess: []
+  /api/v1/lessons:
+    post:
+      tags: 
+        - Уроки
+      summary: Создание нового урока
+      description: Пользователь может создать новый урок, который будет привязан к определенной группе.
+      responses:
+        '201':
+          description: Урок успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonEntity'
+        '400':
+          description: Неверный формат данных урока
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewLessonRequest'
+      security:
+        - TokenAccess: []
+  /api/v1/lessons/{lessonUuid}/description:
+    patch:
+      tags:
+        - Уроки
+      summary: Изменение описания урока
+      description: Метод позволяет изменить описание урока по его уникальному идентификатору.
+      parameters:
+        - in: path
+          name: lessonUuid
+          required: true
+          description: Уникальный идентификатор урока
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Урок не найден
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLessonDescriptionRequest'
+      security:
+        - TokenAccess: []
+  /api/v1/lessons/{lessonUuid}/title:
+    patch:
+      tags:
+        - Уроки
+      summary: Изменение названия урока
+      description: Метод позволяет изменить название урока по его уникальному идентификатору.
+      parameters:
+        - in: path
+          name: lessonUuid
+          required: true
+          description: Уникальный идентификатор урока
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Урок не найден
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLessonTitleRequest'
+      security:
+        - TokenAccess: []
+  /api/v1/groups/{groupUuid}/lessons:
+    get:
+      tags:
+        - Уроки
+      summary: Получение списка уроков в группе
+      description: Получение данных обо всех уроках, принадлежащих определенной группе
+      parameters:
+        - in: path
+          name: groupUuid
+          required: true
+          description: Уникальный идентификатор группы
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LessonEntity'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Уроки не найдены
+      security: 
+        - TokenAccess: []
+  /api/v1/lessons/{uuid}:
+    get:
+      tags:
+        - Уроки
+      summary: Получение информации об уроке
+      description: Получение данных об уроке по его уникальному UUID
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор урока (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LessonEntity'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Урок не найден
+    delete:
+      tags:
+        - Уроки
+      summary: Удаление урока
+      description: Удаление урока по его уникальному UUID
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор урока (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Урок успешно удален
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Урок не найден
+  /api/v1/materials/{materialUuid}:
+    get:
+      tags:
+        - Материалы
+      summary: Получить материал урока по его UUID
+      parameters:
+        - in: path
+          name: materialUuid
+          required: true
+          schema:
+            type: string
+          description: UUID материала, который запрашивается
+      responses:
+        '200':
+          description: Материал урока успешно получен
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+              example: "содержимое файла в виде байтовой строки"
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: Указывает браузеру, как обрабатывать содержимое ответа
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Материал урока не найден
+  /api/v1/lessons/{lessonUuid}/materials:
+    get:
+      tags:
+        - Материалы
+      summary: Получить список материалов урока
+      parameters:
+        - in: path
+          name: lessonUuid
+          required: true
+          schema:
+            type: string
+          description: UUID урока, для которого запрашивается список материалов
+      responses:
+        '200':
+          description: Список материалов урока успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MaterialEntity'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Урок не найден
+    post:
+      tags:
+        - Материалы
+      summary: Загрузить материал для урока
+      parameters:
+        - in: path
+          name: lessonUuid
+          required: true
+          schema:
+            type: string
+          description: UUID урока, для которого загружается материал
+      responses:
+        '200':
+          description: Новый материал успешно добавлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MaterialEntity'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '400':
+          description: Неверный формат данных запроса
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+  /api/v1/tests:
+    post:
+      tags:
+        - Тесты
+      summary: Создание нового теста
+      description: Создание теста
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestInput'
+      responses:
+        '201':
+          description: Тест успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+        '400':
+          description: Неверный формат данных теста
+  /api/v1/tests/{uuid}:
+    get:
+      tags:
+        - Тесты
+      summary: Получение информации о тесте
+      description: Получение данных о тесте по его уникальному UUID
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор теста (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Test'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Тест не найден
+    delete:
+      tags:
+        - Тесты
+      summary: Удаление теста
+      description: Удаление теста по его уникальному UUID
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор теста (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Тест успешно удален
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Тест не найден
+  /api/v1/lessons/{lessonUuid}/tests:
+    get:
+      tags:
+        - Тесты
+      summary: Получить все тесты для урока
+      parameters:
+        - in: path
+          name: lessonUuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Уникальный идентификатор урока
+      responses:
+        '200':
+          description: Список тестов успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Урок не найден
+  /api/v1/questions:
+    post:
+      tags:
+        - Вопросы
+      summary: Создание нового вопроса
+      description: Создание вопроса
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionInput'
+      responses:
+        '201':
+          description: Вопрос успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '400':
+          description: Неверный формат данных вопроса
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+  /api/v1/questions/{uuid}:
+    get:
+      tags:
+        - Вопросы
+      summary: Получение информации о вопросе
+      description: Получение данных о вопросе по его уникальному UUID
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор вопроса (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Вопрос не найден
+    delete:
+      tags:
+        - Вопросы
+      summary: Удаление вопроса
+      description: Удаление вопроса по его уникальному UUID
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          description: Уникальный идентификатор вопроса (UUID)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Вопрос успешно удален
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Вопрос не найден
+  /api/v1/tests/{testUuid}/questions:
+    get:
+      tags:
+        - Вопросы
+      summary: Получить список вопросов урока
+      parameters:
+        - in: path
+          name: testUuid
+          required: true
+          schema:
+            type: string
+          description: UUID теста, для которого запрашивается список вопросов
+      responses:
+        '200':
+          description: Список вопросов урока успешно получен
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+        '401':
+          description: Пользователь не авторизован
+        '403':
+          description: Недостаточно прав для выполнения этой операции
+        '404':
+          description: Тест не найден
+components:
+  schemas:
+    AiCheckerRequestDto:
+      type: object
+      properties:
+        teacherMessage:
+          type: string
+          description: Сообщение учителя
+        studentMessage:
+          type: string
+          description: Сообщение студента
+    ChatCompletion:
+      type: object
+      properties:
+        choices:
+          type: array
+          description: "Массив ответов модели."
+          items:
+            $ref: '#/components/schemas/Choices'
+    Choices:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/MessagesRes'
+        finish_reason:
+          description: >-
+            Причина завершения гипотезы. Возможные значения:
+              * `stop` — модель закончила формировать гипотезу и вернула полный ответ;
+              * `length` — достигнут лимит токенов в сообщении;
+              * `function_call` — указывает, что при запросе была вызвана встроенная функция или сгенерированы аргументы для пользовательской функции;
+              * `blacklist` — запрос подпадает под тематические ограничения.
+          type: string
+          enum:
+            - stop
+            - length
+            - function_call
+            - blacklist
+          example: "stop"
+    MessagesRes:
+      type: object
+      description: "Сгенерированное сообщение."
+      properties:
+        role:
+          type: string
+          enum:
+            - assistant
+          description: "Роль автора сообщения."
+          example: assistant
+        content:
+          type: string
+          description: "Содержимое сообщения, например, результат генерации"
+    BaseResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - message
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: username3@gmail.com
+        password:
+          type: string
+    Auth:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: username3@gmail.com
+        username:
+          type: string
+          example: qwerty
+        password:
+          type: string
+          example: userpops
+        surname:
+          type: string
+          description: Фамилия пользователя
+        name:
+          type: string
+          description: Имя пользователя
+        patronymic:
+          type: string
+          nullable: true
+          description: Отчество пользователя
+        role:
+          type: string
+          enum:
+            - TEACHER
+            - STUDENT
+          description: Роль пользователя
+      required:
+        - email
+        - username
+        - password
+        - surname
+        - name
+        - role
+    User:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор пользователя
+        surname:
+          type: string
+          description: Фамилия пользователя
+        name:
+          type: string
+          description: Имя пользователя
+        patronymic:
+          type: string
+          nullable: true
+          description: Отчество пользователя
+        role:
+          type: string
+          enum:
+            - TEACHER
+            - STUDENT
+          description: Роль пользователя
+    UserInput:
+      type: object
+      properties:
+        surname:
+          type: string
+          description: Фамилия пользователя
+        name:
+          type: string
+          description: Имя пользователя
+        patronymic:
+          type: string
+          nullable: true
+          description: Отчество пользователя
+        role:
+          type: string
+          enum:
+            - TEACHER
+            - STUDENT
+          description: Роль пользователя
+    UserChange:
+      type: object
+      properties:
+        surname:
+          type: string
+          description: Фамилия пользователя
+        name:
+          type: string
+          description: Имя пользователя
+        patronymic:
+          type: string
+          nullable: true
+          description: Отчество пользователя
+    LessonEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор урока
+        title:
+          type: string
+          description: Название урока
+        description:
+          type: string
+          nullable: true
+          description: Описание урока
+        serialNumber:
+          type: integer
+          description: Номер урока
+        groupUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор группы, к которой привязан урок
+      required:
+        - serialNumber
+        - groupUuid
+    NewLessonRequest:
+      type: object
+      properties:
+        groupUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор группы, к которой привязывается урок
+      required:
+        - groupUuid
+    UpdateLessonDescriptionRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Новое описание урока
+      required:
+        - description
+    UpdateLessonTitleRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Новое название урока
+      required:
+        - title
+    CreateGroupRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название группы
+    GroupEntity:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор группы
+        title:
+          type: string
+          description: Название группы
+        inviteCode:
+          type: string
+          description: Уникальный код приглашения
+      required:
+        - uuid
+        - title
+        - inviteCode
+    MaterialEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор материала
+        filename:
+          type: string
+          description: Имя файла материала
+        lessonUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор урока, к которому относится материал
+    Test:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор теста
+        title:
+          type: string
+          description: Название теста
+        dateBegin:
+          type: string
+          format: date
+          description: Дата начала теста
+        dateEnd:
+          type: string
+          format: date
+          nullable: true
+          description: Дата окончания теста
+        deadline:
+          type: integer
+          nullable: true
+          description: Дедлайн теста
+        personTestMark:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 5
+          description: Оценка теста (если есть)
+        lessonUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор урока, к которому относится тест
+    TestInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название теста
+        dateEnd:
+          type: string
+          format: date
+          nullable: true
+          description: Дата окончания теста
+        lessonUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор урока, к которому относится тест
+    Question:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор вопроса
+        title:
+          type: string
+          description: Название вопроса
+        type:
+          type: string
+          enum:
+            - MANUAL_CHECK
+            - AUTO_CHECK
+            - AI_CHECK
+          description: Тип вопроса
+        rightAnswer:
+          type: string
+          description: Правильный ответ на вопрос
+        personAnswer:
+          type: string
+          nullable: true
+          default: "null"
+          description: Ответ пользователя на вопрос
+        chatCompletion:
+          type: string
+          nullable: true
+          default: "null"
+          description: Ответ AI на вопрос
+        personQuestionMark:
+          type: integer
+          nullable: true
+          default: 0
+          minimum: 0
+          maximum: 5
+          description: Оценка вопроса пользователя
+        testUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор теста, к которому относится вопрос
+    QuestionInput:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Название вопроса
+        type:
+          type: string
+          enum:
+            - MANUAL_CHECK
+            - AUTO_CHECK
+            - CHAT_PGT
+          description: Тип вопроса
+        rightAnswer:
+          type: string
+          description: Правильный ответ на вопрос
+        testUuid:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор теста, к которому относится вопрос
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+    NoSuchModel:
+      description: No such Model
+    InternalError:
+      description: Internal Server Error
+    BadRequestFormat:
+      description: Bad request format
+    TooManyRequests:
+      description: Too many requests
+    ValidationError:
+      description: Validation error
+  securitySchemes:
+    TokenAccess:
+      description: >-
+        Аутентификация с помощью токена доступа.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,71 @@
+.main-bauman-class-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-image: url(../../public/img/background_main.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.main-menu-logo-container {
+    margin-left: 61px;
+    margin-top: 15px;
+}
+
+.main-bauman-class-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 101px;
+    backdrop-filter: blur(5px);
+    width: fit-content;
+    justify-content: center;
+    height: 100%;
+}
+
+.main-bauman-class-content-header {
+    color: #3978FF;
+    font-size: 55px;
+    font-weight: 800;
+    max-width: 517px;
+}
+
+.main-bauman-class-content-text {
+    margin-top: 10px;
+    font-size: 20px;
+    width: 660px;
+}
+
+.main-bauman-class-content-buttons-row {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 40px;
+    width: fit-content;
+}
+
+.main-page-content-button-login {
+    background: #4880FF;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 14px;
+    width: 205px;
+    height: 55px;
+    border: none;
+}
+
+.main-page-content-button-login {
+    background-color: #4880FF;
+}
+
+.main-page-content-button-create-account {
+    width: 205px;
+    height: 55px;
+    border-radius: 14px;
+    color: #5088FF;
+    border: 1px solid #5088FF;
+    background: transparent;
+    font-size: 18px;
+    font-weight: 600;
+}

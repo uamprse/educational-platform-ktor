@@ -1,0 +1,38 @@
+:root{
+    --image: url('../../../public/img/icon_course.svg');
+    --image-black: url('../../../public/img/icon_course_black.svg');
+    --cabinet: url('../../../public/img/icon_cabinet.svg');
+    --cabinet-black: url('../../../public/img/icon_cabinet_black.svg');
+}
+
+.menu-item-wrap {
+    display: flex;
+    width: fit-content;
+    gap: 20px;
+    align-self: flex-start;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    padding: 13px;
+    padding-right: 42px;
+    background: #4880FF;
+    border-radius: 8px;
+    color: white;
+}
+
+.menu-item-left {
+    display: flex;
+    background: #4880FF;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    width: 6px;
+}
+
+.menu-item-text {
+    font-size: 14px;
+    font-weight: 600;
+    width: 100px;
+}

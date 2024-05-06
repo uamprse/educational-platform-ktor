@@ -1,0 +1,12 @@
+.add-new-test-form-container-list {
+    width: 100%;
+    max-height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 56px;
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+    flex-direction: column;
+
+    display: flex;
+}

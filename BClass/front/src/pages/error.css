@@ -1,0 +1,10 @@
+.error-page-wrap {
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.error-page-content {
+    margin-top: 25%;
+}

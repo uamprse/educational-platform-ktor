@@ -1,0 +1,89 @@
+.page-header {
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+    max-height: fit-content;
+}
+
+.my-lessons-page-wrap {
+    padding-left: 29px;
+    padding-right: 29px;
+    height: 100%;
+}
+
+.my-lessons-page-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.my-lessons-page-content-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-lessons-page-title {
+    color: #202224;
+    font-weight: bold;
+    font-size: 32px;
+    margin-top: 38px;
+}
+
+.my-lessons-page-content-form {
+    margin-top: 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    color: white;
+    background-image: url("../../public/img/background_my_lessons.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.my-lessons-page-content-form-header {
+    margin-top: 140px;
+    padding-left: 39px;
+    font-size: 50px;
+    font-weight: 900;
+    background: transparent;
+}
+
+.my-lessons-page-content-form-description {
+    padding-left: 39px;
+    max-width: 660px;
+    font-size: 20px;
+    padding-bottom: 33px;
+}
+
+.my-lessons-page-content-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.my-lessons-page-content-list-row {
+    margin-top: 33px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.my-lessons-page-content-list-header {
+    color: #202224;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.my-lessons-page-content-list-button {
+    width: 148px;
+    height: 40px;
+    border-radius: 14px;
+    color: #5088FF;
+    border: 1px solid #5088FF;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+}

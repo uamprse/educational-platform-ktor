@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+body {
+    font-family: "Nunito Sans", sans-serif;
+}
+
+.root-img {
+    background-image: url(../../public/img/login_background.png);
+    height: 100%;
+}
+
+.wrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.log_in_form {
+    background: #ffffff;
+    width: 630px;
+    height: 735.36px;
+    border-radius: 24px;
+    text-align: center;
+    color: #202224;
+}
+
+.log_in_form__header {
+    margin-top: 107px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.log_in_form__par {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.log_in_form__login {
+    margin-top: 37px;
+    width: 516px;
+    height: 96px;
+    margin-left: 57px;
+    margin-right: 57px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.log_in_form__login__par {
+    display: flex;
+    margin-left: 0;
+    margin-bottom: 15px;
+}
+
+.log_in_form__login__input {
+    width: 492px;
+    height: 50px;
+    border-radius: 8px;
+    border-color: #D8D8D8;
+    border-style: solid;
+    padding-inline: 10px;
+    font-size: 16px;
+}
+
+.log_in_form__password {
+    margin-top: 40px;
+    width: 516px;
+    height: 96px;
+    margin-left: 57px;
+    margin-right: 57px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.log_in_form__password__text {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+.log_in_form__password__par {
+    margin-top: 0;
+}
+
+.log_in_form__password__link {
+    color: #608ffd;
+    text-decoration: none;
+    font-weight: 400;
+}
+
+
+.log_in_form__password__input {
+    width: 492px;
+    height: 50px;
+    border-radius: 8px;
+    border-color: #D8D8D8;
+    border-style: solid;
+    padding-inline: 10px;
+    font-size: 16px;
+}
+
+.log_in_form__password__input, .log_in_form__login__input {
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: #608ffd;
+    }
+}
+
+.log_in_form__button {
+    margin-top: 70px;
+    margin-left: 106px;
+    margin-right: 106px;
+}
+
+.log_in_form__button__button {
+    background: #4880FF;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    width: 418px;
+    height: 56px;
+    border: none;
+}
+
+.log_in_form__button__button:hover {
+    background-color: #4880FF;
+}
+
+.log_in_form__create {
+    display: flex;
+    align-items: center;
+    margin-left: 177px;
+    margin-right: 178px;
+    gap: 7px;
+}
+
+.log_in_form__create__text {
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.log_in_form__create__link {
+    color: #608ffd;
+    font-size: 18px;
+    cursor: pointer;
+}

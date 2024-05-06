@@ -1,0 +1,33 @@
+.post {
+    display: flex;
+    padding: 27px 47px;
+    border: 1px solid #D5D5D5;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+    background: #FBFCFF;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.post:hover {
+    border: 2px solid #4880FF;
+}
+
+.my-lesson-remove-button:hover {
+    border: 2px solid #EF3826;
+}
+
+
+
+.my-lesson-remove-button {
+    background-image: url(../../../public/img/remove_bin_icon.svg);
+    background-size: 19.5px 18px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #FBFCFF;
+    width: 65px;
+    height: 40px;
+    border: 1px #D5D5D5 solid;
+    border-radius: 12px;
+}
